@@ -11,13 +11,11 @@ public class CardapioService {
 
     public static void main(String[] args) {
         EntityManager entityManager = JPAUtil.getEntityManagerFontesFood();
-        CardapioDao cardapioDao = new CardapioDao(entityManager);
-
         entityManager.getTransaction().begin();
         CargaDeDadosUtil.cadastrarCategorias(entityManager);
         CargaDeDadosUtil.cadastrarProdutosCardapio(entityManager);
-        System.out.println("Lista de produtos por valor: " + cardapioDao.consultarPorValor(BigDecimal.valueOf(67.50)));
-        System.out.println("O produto pesquisado é: " + cardapioDao.consultarPorNome("sorvete Mágico 5 Leites"));
+        CardapioDao cardapioDao = new CardapioDao(entityManager);
+        System.out.println("Lista de produtos por valor: " + cardapioDao.consultarPorValor(BigDecimal.valueOf(20.00)));
         entityManager.close();
     }
 

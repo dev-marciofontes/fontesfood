@@ -1,6 +1,8 @@
 package br.com.marciofontes.restaurante.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Entity
@@ -12,15 +14,20 @@ public class Cliente {
 
     private String nome;
 
-    private String cep;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Endereco> enderecoList = new ArrayList<>();
 
     public Cliente() {
     }
 
-    public Cliente(String cpf, String nome, String cep) {
+    public Cliente(String cpf, String nome) {
         this.setCpf(cpf);
         this.setNome(nome);
-        this.setCep(cep);
+    }
+
+    public void addEndereco(Endereco endereco) {
+        endereco.setCliente(this);
+        this.enderecoList.add(endereco);
     }
 
     public String getCpf() {
@@ -55,27 +62,12 @@ public class Cliente {
         return Pattern.matches("[\\p{L} .'-]+", nome);
     }
 
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        if (!validarCEP(cep)) {
-            throw new NumberFormatException("CEP inválido. Deve conter apenas números.");
-        }
-        this.cep = cep;
-    }
-
-    public static boolean validarCEP(String cep) {
-        return cep.matches("\\d+");
-    }
-
     @Override
     public String toString() {
         return "Cliente{" +
                 "cpf='" + cpf + '\'' +
                 ", nome='" + nome + '\'' +
-                ", cep='" + cep + '\'' +
+                ", enderecoList=" + enderecoList +
                 '}';
     }
 }
