@@ -3,6 +3,7 @@ package br.com.marciofontes.restaurante.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,10 +23,15 @@ public class Ordem {
     @ManyToOne
     private Cliente cliente;
 
-    @OneToMany
-    private List<OrdensCardapio> ordensCardapioList;
+    @OneToMany(mappedBy = "ordem")
+    private List<OrdensCardapio> ordensCardapioList = new ArrayList<>();
 
     public Ordem() {
+    }
+
+    public void addOrdensCardapio(OrdensCardapio ordensCardapio) {
+        ordensCardapio.setOrdem(this);
+        this.ordensCardapioList.add(ordensCardapio);
     }
 
     public Ordem(Cliente cliente) {
